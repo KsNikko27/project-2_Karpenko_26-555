@@ -11,6 +11,5 @@ def welcome():
         if read_comand == "exit":
             break
         elif read_comand == "help":
-
             print("\n<comand> exit - выйти из программы")
             print("<command> help - справочная информация")
