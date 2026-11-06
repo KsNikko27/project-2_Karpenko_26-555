@@ -1,0 +1,10 @@
+{
+    "Inception": {
+        "year": "str",
+        "rating": "str"
+    },
+    "Интерстеллар": {
+        "year": "int",
+        "rating": "bool"
+    }
+}

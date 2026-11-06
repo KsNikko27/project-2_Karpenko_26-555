@@ -4,7 +4,7 @@ import primitive_db.engine
 
 def main():
     print("DB is running....")
-    primitive_db.engine.welcome()
+    primitive_db.engine.run()
 
 
 if __name__ == "__main__":

@@ -7,48 +7,26 @@ def load_metadata(filepath):
             data = json.load(file)
             return data
     except FileNotFoundError:
-        #print("Такого файла не существует")
+        #print(f"Файла {filepath} не существует")
+        return {}
+    except json.JSONDecodeError:
         return {}
 
 def save_metadata(filepath, data):
     with open(filepath, "w", encoding="utf-8") as file:
         json.dump(data, file,ensure_ascii=False, indent=4)
-
-load_metadata("db_meta.json")
-data = {{
-    "type": "Person",
-    "text": "Hayden Panettiere",
-    "start": 0,
-    "end": 17,
-    "confidence": 0.9986
-  },
-  {
-    "type": "Job Title",
-    "text": "actress",
-    "start": 68,
-    "end": 75,
-    "confidence": 0.8307
-  },
-  {
-    "type": "Organization",
-    "text": "coroner",
-    "start": 156,
-    "end": 163,
-    "confidence": 0.9512
-  },
-  {
-    "type": "Job Title",
-    "text": "actress",
-    "start": 257,
-    "end": 264,
-    "confidence": 0.9013
-  },
-  {
-    "type": "Person",
-    "text": "Hayden Panettiere",
-    "start": 265,
-    "end": 282,
-    "confidence": 0.9924
-  }}
-data
-save_metadata("db_meta.json", data)
+    
+def split_command(command):
+    if len(command) < 3:
+        raise ValueError(f"Некорректное значение: {" ".join(command)
+                                                   }. Попробуйте снова.")
+    if command[1][0].isdigit():
+        raise ValueError("Ошибка. Имя таблицы должно начинаться с буквы.")
+    columns = {}
+    for col in command[2:]:
+        name, sep, dtype = col.strip().partition(":")
+        if sep != ":" or not name or not dtype:
+            raise ValueError(f"Некорректное значение: {"".join([name,sep,dtype])
+                                                       }. Попробуйте снова.")
+        columns[name] = dtype
+    return command[1], columns
