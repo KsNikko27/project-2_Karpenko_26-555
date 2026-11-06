@@ -1,10 +1,4 @@
 {
-    "name": {
-        "ID": "int",
-        "name": "str",
-        "age": "int",
-        "printed": "bool"
-    },
     "formed": {
         "ID": "int",
         "name": "str",
@@ -16,5 +10,11 @@
         "name": "str",
         "age": "int",
         "printed": "bool"
+    },
+    "name": {
+        "ID": "int",
+        "column1": "int",
+        "column2": "str",
+        "column3": "bool"
     }
 }
