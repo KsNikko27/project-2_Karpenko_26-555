@@ -53,7 +53,7 @@ def run():
             try:
                 core.create_table(metadata, table_name, columns)
                 utils.save_metadata(constant.DIR_JSON, metadata)
-                col_str = ", ".join(f"{n}:{t}" for n, t in columns.items())
+                col_str = ", ".join(f"{n}:{t}" for n, t in metadata[table_name].items())
                 print(f"Таблица \"{table_name
                                    }\" успешно создана со столбцами: {col_str}"
                                    )

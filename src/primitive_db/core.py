@@ -3,11 +3,11 @@ import primitive_db.constant as constant
 
 def create_table(metadata, table_name, columns):
     if columns.get("ID") != "int":
-        columns_with_id = {"ID":"int", **columns}
-    if not all([colum in constant.COLOMN_TYPES for colum in columns_with_id.values()]):
+        columns = {"ID":"int", **columns}
+    if not all([colum in constant.COLOMN_TYPES for colum in columns.values()]):
         raise ValueError("\nОшибка: Тип должен быть bool, str или int.")
     if table_name not in metadata.keys():
-        metadata[table_name] = {**columns_with_id}
+        metadata[table_name] = {**columns}
         return metadata
     else:
         raise ValueError(f"\nОшибка: Таблица \"{table_name}\" уже существует.")
@@ -25,6 +25,6 @@ def list_tables(metadata):
         print("Таблиц пока нет.")
     else:
         name_table = sorted(metadata.keys())
-    for name in name_table:
-        print(f"-{name}")
-
+        for name in name_table:
+            print(f"-{name}")
+    

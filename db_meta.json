@@ -1,10 +1,20 @@
 {
-    "Inception": {
-        "year": "str",
-        "rating": "str"
+    "name": {
+        "ID": "int",
+        "name": "str",
+        "age": "int",
+        "printed": "bool"
     },
-    "Интерстеллар": {
-        "year": "int",
-        "rating": "bool"
+    "formed": {
+        "ID": "int",
+        "name": "str",
+        "age": "int",
+        "printed": "bool"
+    },
+    "MEPHI": {
+        "ID": "int",
+        "name": "str",
+        "age": "int",
+        "printed": "bool"
     }
 }
