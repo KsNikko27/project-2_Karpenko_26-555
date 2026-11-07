@@ -1,6 +1,6 @@
 [project]
 name = "primitive-db-karpenko-26-555"
-version = "0.1.0"
+version = "0.1.1"
 description = "Add your description here"
 readme = "README.md"
 authors = [
