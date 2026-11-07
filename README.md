@@ -1,24 +1,64 @@
 # project-2_Karpenko_26-555
 
+
+# Запуск проекта
+![Установка проекта](assets/gif/Установка.gif)
+## Установка uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+## проверка версии
+uv --version
+
+## Инициализация 
+uv init
+
+## Установка проекта
+uv tool install primitive-db-karpenko-26-555
+
+## Запуск
+database
+
+## При возникновении ошибок
+
+После установки проекта через "uv":
+
+uv tool install primitive-db-karpenko-26-555
+
+Для запуска приложения используйте полный путь к исполняемому файлу:
+
+$HOME/.local/bin/database (Linux)
+
+Если используется пользователь "root":
+
+/root/.local/bin/database
+
+После этого приложение запустится и выведет сообщение:
+
+DB is running....
+
+
 ## УПРАВЛЕНИЕ ТАБЛИЦАМИ
+![запуск и управление базой](assets/gif/Команды.gif)
 ### Функции:
 #### Cоздать таблицу
 create_table <имя_таблицы> <столбец1:тип> ..
 #### Пример 
->>> Введите команду: create_table name ID:int column1:int column2:str column3:bool
->>> Таблица "name" успешно создана со столбцами: ID:int, column1:int, column2:str, column3:bool
+Введите команду: create_table name ID:int column1:int column2:str column3:bool
+
+Таблица "name" успешно создана со столбцами: ID:int, column1:int, column2:str, column3:bool
 
 ####  Показать список всех таблиц
 list_tables
 #### Пример 
->>> Введите команду: list_tables
--name
+Введите команду: list_tables
+
+name
 
 #### Удалить таблицу
 - drop_table <имя_таблицы>
 #### Пример 
->>> Введите команду: drop_table name
->>> Таблица "name" успешно удалена.
+Введите команду: drop_table name
+
+Таблица "name" успешно удалена.
 
     
 ### Общие команды:
