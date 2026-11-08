@@ -1,6 +1,9 @@
 
 
 def parser_where_set(column):
+    """Разбирает пару «столбец = значение»:
+        проверяет разделитель и возвращает кортеж
+        (столбец, значение)."""
     colum_clause, equal, value_clause = column
     if equal != "=":
         raise ValueError(f"Ошибка. Ожидалось: \"=\". Введенное значение: {equal}")
@@ -8,6 +11,8 @@ def parser_where_set(column):
     return colum_clause, value_clause   
 
 def parse_values(raw):
+    """Разбирает строку вида (значение1, ...)
+    и возвращает кортеж очищенных значений."""
     raw = raw.strip()
     if not (raw[0].startswith("(") and raw[-1].endswith(")")):
         raise ValueError('Ожидались значения в скобках: values (<значения>)')
@@ -16,6 +21,10 @@ def parse_values(raw):
     return tuple(inner)
 
 def pars_row(metadata, table_name, valuses):
+    """Парсит значения строки по данным таблицы:
+        сверяет количество столбцов и типы;
+        возвращает (словарь значений, None)
+        или (None, список ошибок)."""
     columns = metadata[table_name]
     erros = []
     parsed = {}
@@ -35,6 +44,9 @@ def pars_row(metadata, table_name, valuses):
 
 
 def parse_col(col, expect_type):
+    """Приводит значение к ожидаемому типу (int, str, bool);
+        возвращает (значение, None) при успехе
+        или (None, сообщение об ошибке)."""
     if expect_type == "int":
         try:
             return int(col), None

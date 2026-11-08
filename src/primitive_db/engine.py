@@ -5,6 +5,7 @@ from prettytable import PrettyTable
 
 import primitive_db.constant as constant
 import primitive_db.core as core
+import primitive_db.decorators as decorators
 import primitive_db.parser as parser
 import primitive_db.utils as utils
 
@@ -190,8 +191,10 @@ def run():
 
  
 
-
+@decorators.log_time
 def handle_insert(args):
+    """Обрабатывает команду insert: проверяет формат,
+    валидирует таблицу и вставляет значения через core.insert."""
     if len(args) < 3 or args[0] != constant.INTO:
         raise ValueError("Формат: insert into <таблица> values (<значение1>, ...)")
     table_name = args[1]
@@ -212,7 +215,10 @@ def handle_insert(args):
         return table_data
     raise ValueError("Формат: insert into <таблица> values (<значение1>, ...)")
 
+@decorators.log_time
 def handle_select(args):
+    """Обрабатывает команду SELECT: валидирует таблицу и
+     при наличии WHERE, фильтрует данные через core.select."""
     #from users where age = 28
     if len(args) < 2 or args[0] != constant.FROM:
         raise ValueError(
@@ -251,7 +257,9 @@ def handle_select(args):
                                          f"получено \"{"".join(args[3:])}\"")
 
 def handle_update(args):
-    
+    """Обрабатывает команду UPDATE: валидирует формат
+    «set <столбец> = <значение> 
+    where ...» и обновляет строки через core.update."""
     #users set age = 29 where name = "Sergei"
     if len(args) < 4 or args[1] != constant.SET:
         raise ValueError(
@@ -290,7 +298,9 @@ def handle_update(args):
     return table_data, id_list
 
 def handle_delete(args):   
-    #from <имя_таблицы> where <столбец> = <значение>
+    """Обрабатывает команду DELETE: 
+    валидирует условие WHERE
+    и удаляет подходящие строки через core.delete."""
     if len(args) < 3 or args[0] != constant.FROM:
         raise ValueError(
                     "Формат: delete from <имя_таблицы> "+
@@ -315,6 +325,3 @@ def handle_delete(args):
                                        val_where.strip()))
     return table_data, id_list 
 
-
-
-###select from name where firm = 2

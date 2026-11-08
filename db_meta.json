@@ -1,10 +1,4 @@
 {
-    "MEPHI": {
-        "ID": "int",
-        "name": "str",
-        "age": "int",
-        "printed": "bool"
-    },
     "name": {
         "ID": "int",
         "name": "str",

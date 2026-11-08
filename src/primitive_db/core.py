@@ -1,9 +1,13 @@
 import primitive_db.constant as constant
+import primitive_db.decorators as decorators
 import primitive_db.parser as parser
 import primitive_db.utils as utils
 
 
 def create_table(metadata, table_name, columns):
+    """Создаёт новую таблицу: добавляет столбец ID,
+        проверяет типы столбцов и уникальность имени;
+        иначе бросает ValueError."""
     if columns.get("ID") != "int":
         columns = {"ID":"int", **columns}
     if not all([colum in constant.COLOMN_TYPES for colum in columns.values()]):
@@ -13,8 +17,11 @@ def create_table(metadata, table_name, columns):
         return metadata
     else:
         raise ValueError(f"\nОшибка: Таблица \"{table_name}\" уже существует.")
-
+    
+@decorators.confirm_action
 def drop_table(metadata, table_name):
+    """Удаляет таблицу из метаданных по имени
+        после подтверждения пользователя; если таблицы нет то ValueError."""
     if table_name not in metadata.keys():
         raise ValueError(f"Ошибка: Таблица \"{table_name}\" не существует.")
     else:
@@ -23,6 +30,8 @@ def drop_table(metadata, table_name):
         return metadata
     
 def list_tables(metadata):
+    """Выводит список таблиц (по алфавиту) 
+        или сообщение об их отсутствии."""
     if not metadata:
         print("Таблиц пока нет.")
     else:
@@ -31,6 +40,10 @@ def list_tables(metadata):
             print(f"-{name}")
 
 def insert(metadata, table_name, values):
+    """Добавляет строку в таблицу:
+        парсит и валидирует значения,
+        генерирует следующий ID
+        и возвращает обновлённые данные."""
     if metadata.get(table_name, False):
         columns, err = parser.pars_row(metadata, table_name, values)
     else:
@@ -46,6 +59,8 @@ def insert(metadata, table_name, values):
     return finall_table
 
 def select(table_data, where_clause=None):
+    """Возвращает строки таблицы целиком
+        или отфильтрованные по условию «столбец = значение»."""
     if where_clause is None:
         return table_data
     else:
@@ -65,13 +80,15 @@ def select(table_data, where_clause=None):
         raise ValueError(f"Ошибка выбора столбцов. {" и ".join([column_where])}")
 
 def update(table_data, set_clause, where_clause):
+    """Обновляет значения столбца в строках,
+        подходящих под условие WHERE (кроме ID);
+        возвращает новые данные и список затронутых ID."""
     column_set, value_set = parser.parser_where_set(set_clause)
     if column_set == "ID":
         raise ValueError("Ошибка, ID в таблице изменить нельзя.")
     column_where, value_where = parser.parser_where_set(where_clause)
     set_where_keys = {column_set, column_where}
-    
-    
+        
     if set_where_keys.issubset(utils.set_unique_keys(table_data)):
         typed_value_where, err = parser.parse_col(
                     value_where, 
@@ -94,8 +111,12 @@ def update(table_data, set_clause, where_clause):
         return update_table, id_values
     else:
         raise ValueError("Ошибка выбора столбцов.")
-
+    
+@decorators.confirm_action
 def delete(table_data, where_clause):
+    """Удаляет строки, подходящие под условие WHERE,
+        после подтверждения;
+        возвращает обновлённые данные и список удалённых ID."""
     column_where, value_where = parser.parser_where_set(where_clause)
     
     if set([column_where]).issubset(
