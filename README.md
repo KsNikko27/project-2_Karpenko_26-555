@@ -9,7 +9,7 @@
 >uv --version
 
 ## Инициализация 
->uv init
+>uv init database
 
 ## Установка проекта
 >uv tool install primitive-db-karpenko-26-555

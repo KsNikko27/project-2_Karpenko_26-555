@@ -12,9 +12,9 @@ def load_metadata(filepath):
             data = json.load(file)
             return data
     except FileNotFoundError:
-        return list()
+        return dict()
     except json.JSONDecodeError:
-        return list()
+        return dict()
 
 def save_metadata(filepath, data):
     """Сохраняет данные таблиц базы в JSON-файл с отступами."""

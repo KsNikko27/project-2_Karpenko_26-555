@@ -12,11 +12,10 @@ def create_table(metadata, table_name, columns):
         columns = {"ID":"int", **columns}
     if not all([colum in constant.COLOMN_TYPES for colum in columns.values()]):
         raise ValueError("\nОшибка: Тип должен быть bool, str или int.")
-    if table_name not in metadata.keys():
-        metadata[table_name] = {**columns}
-        return metadata
-    else:
-        raise ValueError(f"\nОшибка: Таблица \"{table_name}\" уже существует.")
+    if table_name in metadata:
+        raise ValueError(f"Ошибка. Таблица '{table_name}' уже существует.")
+    metadata[table_name] = dict(columns)
+    return metadata
     
 @decorators.confirm_action
 def drop_table(metadata, table_name):
