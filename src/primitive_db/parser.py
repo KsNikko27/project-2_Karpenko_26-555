@@ -44,7 +44,7 @@ def parse_col(col, expect_type):
         if isinstance(col, str):
             return col, None    
         else:
-            return None, f"Ожидалась строка в кавычках \"<значение>\" или '<значение>' , получено {col}"
+            return None, f"Ожидалась строка '<значение>' , получено {col}"
             
     if expect_type == "bool":
         if col.lower() in ["true", 1, "1"]:

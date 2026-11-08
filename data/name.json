@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "ID": 1,
+        "name": "sergey",
+        "firm": "MEPHI",
+        "access": true
+    },
+    {
+        "ID": 2,
+        "name": "sergey",
+        "firm": "MEPHI",
+        "access": true
+    },
+    {
+        "ID": 3,
+        "name": "sergey",
+        "firm": "MEPHI",
+        "access": true
+    }
+]

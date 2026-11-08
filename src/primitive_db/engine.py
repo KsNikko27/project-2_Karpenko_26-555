@@ -5,8 +5,8 @@ from prettytable import PrettyTable
 
 import primitive_db.constant as constant
 import primitive_db.core as core
-import primitive_db.utils as utils
 import primitive_db.parser as parser
+import primitive_db.utils as utils
 
 
 def print_help():
@@ -19,14 +19,15 @@ def print_help():
     print("<command> drop_table <имя_таблицы> - удалить таблицу")
 
     print("\n***Операции с данными***")
-    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) " +
-          "- создать запись.")
-    print("<command> select from <имя_таблицы> where <столбец> = <значение>" +
-          " - прочитать записи по условию.")
+    print("<command> insert into <имя_таблицы> " +
+           "values (<значение1>, <значение2>, ...) - создать запись.")
+    print("<command> select from <имя_таблицы> " +
+          "where <столбец> = <значение> - прочитать записи по условию.")
     print("<command> select from <имя_таблицы> - прочитать все записи.")
     print("<command> update <имя_таблицы> set <столбец1> = <новое_значение1>",
           "where <столбец_условия> = <значение_условия> - обновить запись.")
-    print("<command> delete from <имя_таблицы> where <столбец> = <значение> - удалить запись.")
+    print("<command> delete from <имя_таблицы> " +
+          "where <столбец> = <значение> - удалить запись.")
     print("<command> info <имя_таблицы> - вывести информацию о таблице.")
     
     print("\nОбщие команды:")
@@ -112,9 +113,10 @@ def run():
                 args[2]}\".")
 ##########################SELECT#############################
         elif args[0] == constant.SELECT:
+            #select from <имя_таблицы> where <столбец> = <значение>
             try:
                 table_data = handle_select(args[1:])
-                table_keys = table_data[0].keys()
+                table_keys = utils.load_metadata(constant.DIR_JSON)[args[2]].keys()
             except ValueError as e:
                 print(e)
                 continue
@@ -140,8 +142,9 @@ def run():
                 print("Изменений не зафиксированно")
                 continue
             print(f"Запись с ID={
-                ", ".join([str(ids) for ids in id_list])} успешно добавлена в таблицу \"{
-                args[1]}\".")           
+                ", ".join([str(ids) 
+                           for ids in id_list])} в таблице '{
+                               args[1]}' обновлена.")           
 ##########################DELETE#############################
         elif args[0] == constant.DELETE:
             #delete from <имя_таблицы> where <столбец> = <значение>
@@ -176,8 +179,9 @@ def run():
                 continue
             table_data = utils.load_table_data(table_name)
             print(f"Таблица: {table_name}")
-            print(f"Столбцы: " +
-                  ", ".join([f"{key}:{metadata[table_name][key]}" for key in metadata[table_name]]) )
+            print("Столбцы: " +
+                  ", ".join([f"{key}:{metadata[table_name][key]}" 
+                    for key in metadata[table_name]]) )
             print(f"Количество записей: {len(table_data)}")
             continue
                    
@@ -234,16 +238,16 @@ def handle_select(args):
         elif args[3:]:
             column, sep, value = "".join(args[3:]).partition("=")
             if "" in (column, sep, value):
-                raise ValueError(f"Ошибка: ожидается <столбец> = <значение>, " +
+                raise ValueError("Ошибка: ожидается <столбец> = <значение>, " +
                                 f"получено: \"{column}{sep}{value}\"")
             table_data = core.select(table_data, (column,sep,value))
             return table_data
                             
         else:
-            raise ValueError(f"Ошибка: ожидается <столбец> = <значение>, " +
+            raise ValueError("Ошибка: ожидается <столбец> = <значение>, " +
                                      f"получено \"{"".join(args[3:])}\"")
     else:
-        raise ValueError(f"Ошибка: ожидается <столбец> = <значение>, " +
+        raise ValueError("Ошибка: ожидается <столбец> = <значение>, " +
                                          f"получено \"{"".join(args[3:])}\"")
 
 def handle_update(args):
@@ -265,7 +269,7 @@ def handle_update(args):
     
     firs_args, where, sec_args = " ".join(args[2:]).partition(constant.WHERE)
     if "" in (firs_args, where, sec_args):
-        raise ValueError((f"Ошибка: " +
+        raise ValueError(("Ошибка: " +
                 "ожидается set <столбец> = <значение>, " +
                 "where <столбец> = <значение> " +
                 f"получено \"{" ".join(args[2:])}\""))
@@ -274,13 +278,14 @@ def handle_update(args):
     col_where, sep_where, val_where =  sec_args.partition('=')
     if "" in (col_set, sep_set, val_set,
                      col_where, sep_where, val_where):
-        raise ValueError((f"Ошибка: " +
+        raise ValueError(("Ошибка: " +
                 "ожидается set <столбец> = <значение>, " +
                 "where <столбец> = <значение> " +
                 f"получено \"{" ".join(args[2:])}\""))
     
     
-    table_data, id_list = core.update(table_data, (col_set.strip(), sep_set, val_set.strip()),
+    table_data, id_list = core.update(
+            table_data,(col_set.strip(), sep_set, val_set.strip()),
                 (col_where.strip(), sep_where, val_where.strip()))
     return table_data, id_list
 
@@ -306,10 +311,10 @@ def handle_delete(args):
         raise ValueError("Ошибка аргументов <столбец> = <значение> " +
                             f'получено \"{" ".join(args[3:])}".')
     table_data, id_list = core.delete(table_data, 
-                                      (col_where.strip(), sep_where, val_where.strip()))
+                                      (col_where.strip(), sep_where, 
+                                       val_where.strip()))
     return table_data, id_list 
 
 
-run()
 
-
+###select from name where firm = 2

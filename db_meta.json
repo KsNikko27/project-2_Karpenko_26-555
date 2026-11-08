@@ -1,18 +1,14 @@
 {
-    "formed": {
-        "ID": "int",
-        "name": "str",
-        "age": "int",
-        "printed": "bool"
-    },
     "MEPHI": {
         "ID": "int",
         "name": "str",
         "age": "int",
         "printed": "bool"
     },
-    "nae": {
+    "name": {
         "ID": "int",
-        "col": "int"
+        "name": "str",
+        "firm": "str",
+        "access": "bool"
     }
 }

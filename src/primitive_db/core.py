@@ -1,6 +1,6 @@
 import primitive_db.constant as constant
-import primitive_db.utils as utils
 import primitive_db.parser as parser
+import primitive_db.utils as utils
 
 
 def create_table(metadata, table_name, columns):
@@ -35,7 +35,7 @@ def insert(metadata, table_name, values):
         columns, err = parser.pars_row(metadata, table_name, values)
     else:
         raise ValueError(f"Таблицы {table_name}, не существует.")
-    if err != None:
+    if err is not None:
         if isinstance(err, str):
             err = [err]
         raise ValueError(" ".join(err))
@@ -46,7 +46,7 @@ def insert(metadata, table_name, values):
     return finall_table
 
 def select(table_data, where_clause=None):
-    if where_clause == None:
+    if where_clause is None:
         return table_data
     else:
         column_where, value_where = parser.parser_where_set(where_clause)
@@ -57,16 +57,17 @@ def select(table_data, where_clause=None):
                 value_where, 
                 type(table_data[0][column_where]).__name__)
 
-            if typed_value_where == None:
+            if typed_value_where is None:
                 raise ValueError(f"Ошибка выбора столбцов. {" и ".join([err])}")
             
-            return [data for data in table_data if data.get(column_where) == typed_value_where]
+            return [data for data in table_data if data.get(column_where) == 
+                    typed_value_where]
         raise ValueError(f"Ошибка выбора столбцов. {" и ".join([column_where])}")
 
 def update(table_data, set_clause, where_clause):
     column_set, value_set = parser.parser_where_set(set_clause)
     if column_set == "ID":
-        raise ValueError(f"Ошибка, ID в таблице изменить нельзя.")
+        raise ValueError("Ошибка, ID в таблице изменить нельзя.")
     column_where, value_where = parser.parser_where_set(where_clause)
     set_where_keys = {column_set, column_where}
     
@@ -75,11 +76,11 @@ def update(table_data, set_clause, where_clause):
         typed_value_where, err = parser.parse_col(
                     value_where, 
                     type(table_data[0][column_where]).__name__) 
-        typed_value_set = parser.parse_col(
+        typed_value_set, err = parser.parse_col(
                     value_set, 
-                    type(table_data[0][column_where]).__name__)
+                    type(table_data[0][column_set]).__name__)
         
-        if typed_value_where == None or typed_value_set == None:
+        if typed_value_where is None or typed_value_set is None:
             raise ValueError(f"Ошибка выбора столбцов. {" и ".join([err])}")
         id_values = [data["ID"]
                     for data in table_data
@@ -92,7 +93,7 @@ def update(table_data, set_clause, where_clause):
         ]
         return update_table, id_values
     else:
-        raise ValueError(f"Ошибка выбора столбцов.")
+        raise ValueError("Ошибка выбора столбцов.")
 
 def delete(table_data, where_clause):
     column_where, value_where = parser.parser_where_set(where_clause)
@@ -102,7 +103,7 @@ def delete(table_data, where_clause):
         typed_value_where, err = parser.parse_col(
                     value_where, 
                     type(table_data[0][column_where]).__name__)
-        if typed_value_where == None:
+        if typed_value_where is None:
             raise ValueError(f"Ошибка выбора столбцов. {" и ".join([err])}")
 
         id_values = [data["ID"]
