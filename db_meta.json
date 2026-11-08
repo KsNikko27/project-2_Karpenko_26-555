@@ -1,8 +1,0 @@
-{
-    "name": {
-        "ID": "int",
-        "name": "str",
-        "firm": "str",
-        "access": "bool"
-    }
-}
