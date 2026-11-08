@@ -11,10 +11,8 @@
         "age": "int",
         "printed": "bool"
     },
-    "name": {
+    "nae": {
         "ID": "int",
-        "column1": "int",
-        "column2": "str",
-        "column3": "bool"
+        "col": "int"
     }
 }
